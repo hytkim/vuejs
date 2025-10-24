@@ -1,7 +1,17 @@
 <template>
   <h3>Todo List(Provide/Inject)</h3>
   <!-- html넘겨줄땐 v-bind:msg="<h3></h3>" 를 써라-->
-  <TodoInput msg="<h3>글등록</h3>"></TodoInput>
+  <TodoInput>
+    <template v-slot:header>
+      <h1>글등록 Templ stay header</h1>
+    </template>
+    <template v-slot:footer>
+      <h1>글등록 Templ stay footer</h1>
+    </template>
+    <template v-slot:default>
+      <h2>Default</h2>
+    </template>
+  </TodoInput>
   <TodoItemContainer v-for="todo in todos" :key="todo.id" v-bind:todo="todo"> </TodoItemContainer>
 </template>
 

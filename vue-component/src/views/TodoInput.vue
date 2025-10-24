@@ -1,4 +1,8 @@
 <template>
+  <slot name="header"></slot>
+  <slot></slot>
+  <slot name="footer"></slot>
+
   <div>
     <input
       type="text"
@@ -11,9 +15,13 @@
 </template>
 
 <script setup>
-import { inject, ref } from "vue";
+import { defineProps, inject, ref } from "vue";
 
 const todoText = ref("");
+
+defineProps({
+  msg: String,
+});
 
 const addTodo = inject("addTodo");
 const handleAdd = () => {
