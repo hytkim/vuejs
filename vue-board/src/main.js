@@ -6,7 +6,7 @@ import router from "./router";
 
 const app = createApp(App);
 
-app.use(createPinia());
+app.use(createPinia()); //stores의 공통객체를쓸수있다.
 app.use(router);
 
 app.mount("#app");

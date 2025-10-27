@@ -11,9 +11,6 @@
         <p>{{ post.content }}</p>
         <p>
           <em>작성자: {{ post.writer }}</em>
-          <RouterLink class="modify-btn" :to="{ name: 'ModifyView', params: { id: post.id } }">
-            수정
-          </RouterLink>
         </p>
       </li>
     </ul>

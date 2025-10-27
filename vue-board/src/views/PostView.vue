@@ -6,7 +6,7 @@
     <p>
       <em>작성자: {{ post.writer }}</em>
     </p>
-    <p>작성일시: {{ writeDate }}</p>
+    <p>작성일시: {{ post.write_date }}</p>
     <button @click="deletePostHandler">삭제</button>
     <RouterLink to="/">목록으로</RouterLink>
   </div>
@@ -14,33 +14,27 @@
 
 <script setup>
 // import { computed, inject, onMounted, ref } from "vue";
-import { computed, onMounted, ref } from "vue";
+import { onBeforeMount } from "vue";
 import { useRoute, useRouter } from "vue-router";
-import axios from "axios";
+import { usePostStore } from "../stores/post";
+
 const route = useRoute(); // 라우트객체 생성
 const router = useRouter(); // 라우터 객체 생성
-// const deletePost = inject("deletePost"); // deletePost 함수 주입
-// 게시글 데이터 상태 관리
-const post = ref({});
-const writeDate = computed(() => {
-  if (post.value.write_date) {
-    return new Date(post.value.write_date).toLocaleDateString();
-  }
-  return "";
-});
 
-// Mounted훅에서 실행될 이벤트
-onMounted(async () => {
-  // 여기서  rote.params.id를 사용하여 필요한 데이터를 가져옴
-  const result = await axios(`http://localhost:3000/board/${route.params.id}`);
-  console.log("PostData: ", result.data);
-  post.value = result.data[0];
+// Store사용
+const postStore = usePostStore();
+// const post = computed(() => postStore.getPostById);
+const post = postStore.getPostById(route.params.id);
+console.log("post is: ", post);
+onBeforeMount(async () => {
+  await postStore.fetchPosts();
 });
 
 // 게시글 삭제 inject 이벤트 핸들러
 const deletePostHandler = async () => {
-  await axios.delete(`http://localhost:3000/board/${route.params.id}`);
-  // router.push("/");
+  const postId = route.params.id;
+  await postStore.deletePost(postId);
+  // 목록으로 이동
   router.push({ name: "HomeView" });
 };
 </script>

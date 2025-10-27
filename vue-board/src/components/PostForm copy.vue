@@ -1,48 +1,50 @@
 <template>
   <h3>글작성</h3>
   <form v-on:submit.prevent="addPostHandler">
-    <!-- prevent가 없으면 페이지 이동임-->
     <div>
-      <label for="title"> 제목 : </label>
+      <label for="title">제목</label>
       <input type="text" id="title" name="title" v-model="title" required />
     </div>
     <div>
-      <label for="content"> 내용 : </label>
-      <textarea id="content" name="content" v-model="content" required />
+      <label for="content">내용:</label>
+      <textarea type="text" id="content" name="content" v-model="content" required> </textarea>
     </div>
     <div>
-      <label for="writer"> 작성자 : </label>
-      <input id="writer" name="writer" v-model="writer" required />
+      <label for="writer">작성자</label>
+      <input type="text" id="writer" name="writer" v-model="writer" required />
     </div>
     <button type="submit">작성</button>
   </form>
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, inject } from "vue";
+//상위 컴포넌트에서 provide로 정의한 함수를 inject로 받아올것.
+const addPost = inject("addPost");
 
-// pinia store 에서 addpost 함수 주입
-import { usePostStore } from "@/stores/post";
-const postStore = usePostStore(); // pinia 스토어 사용
-const { addPost } = postStore; // addPost 함수 추출
-
-// 폼 데이터 상태 관리
+//Data
 const title = ref("");
 const content = ref("");
 const writer = ref("");
 
-// 폼 제출 핸들러
+//폼 제출 이벤트 핸들러
 const addPostHandler = () => {
+  // 예외 처리
   if (!title.value || !content.value || !writer.value) {
     alert("모든 필드를 작성해주세요.");
     return;
   }
+
+  // 입력값으로 상위컴포넌트에 전송할 데이터 생성
   const newPost = {
     title: title.value,
     content: content.value,
     writer: writer.value,
   };
+
+  //상위컴포넌트로 전송
   addPost(newPost);
+
   //폼 초기화
   title.value = "";
   content.value = "";
