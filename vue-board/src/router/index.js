@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from "vue-router";
 import HomeView from "../views/HomeView.vue";
 import PostView from "../views/PostView.vue";
 import ModifyView from "../views/ModifyView.vue";
+import LoginView from "../views/LoginView.vue";
 
 // HomeView 에서 목록 컴포넌트 보여주고, PostView
 const router = createRouter({
@@ -16,12 +17,17 @@ const router = createRouter({
       path: "/post/:id",
       name: "PostView",
       component: PostView,
-      props: true,
+      // props: true,
     },
     {
       path: "/modify/:id",
       name: "ModifyView",
       component: ModifyView,
+    },
+    {
+      path: "/login",
+      name: "LoginView",
+      component: LoginView,
     },
     {
       path: "/about",
